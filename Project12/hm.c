@@ -22,7 +22,6 @@ typedef struct WorkerList {
 
 //Functions
 worker* CreatWorker(int sign);
-//worker* _createWorker(unsigned long id, char* name, unsigned long salary, char yearHeb[6], unsigned long yearIntl, char sign);
 void PrintWorker(worker* w, int sign);
 WorkerList* addWorker(WorkerList* head, worker* w);
 int index(WorkerList* head, long unsigned id);
@@ -37,18 +36,12 @@ void main() {
 	
 	worker* w1 = CreatWorker(1);
 	worker* w2 = CreatWorker(1);
-	/*worker* w3 = CreatWorker(0);
-	worker* w4 = CreatWorker(1);*/
+	worker* w3 = CreatWorker(1);
+	worker* w4 = CreatWorker(1);
 	
 	printf("the worker list is:\n");
 	WorkerList* head = addWorker(NULL, w1);
-	/*PrintWorker(w1, INTYEAR);
-	PrintWorker(w2, INTYEAR);
-	PrintWorker(w3, INTYEAR);
-	PrintWorker(w4, INTYEAR);*/
 	head = addWorker(head, w2);
-	/*head = addWorker(head, w3);
-	head = addWorker(head, w4);*/
 	PrintAllWorkers(head);
 	printf("****************\n");
 
@@ -64,22 +57,13 @@ void main() {
 	printf("List in reverse order:\n");
 	head = reverse(head);
 	PrintAllWorkers(head);
-	printf("****************");
+	printf("****************\n");
 	
 	printf("Updated List:\n");
 	head = deleteWorstWorker(head);
 	PrintAllWorkers(head);
-	printf("****************");
+	printf("****************\n");
 	
-
-	////check functions 1&2
-	//worker* worker1 = CreatWorker(INTYEAR);
-	//PrintWorker(worker1, INTYEAR);
-
-	////function 3
-	//head = addWorker(NULL, worker1);
-	//worker* worker2 = CreatWorker(INTYEAR);
-	//head = addWorker(head, worker2);
 	freeWorkers(head);
 
 }
@@ -119,34 +103,8 @@ worker* CreatWorker(int sign)
 	return w;
 }
 
-worker* _createWorker(unsigned long id, char* name, unsigned long salary, char yearHeb[6], unsigned long yearIntl, char sign)
-{
-	worker* w = (worker*)malloc(sizeof(worker));
-	if (w == NULL) exit(0);
-	w->ID = id;
-	w->salary = salary;
-	int len = strlen(name);
-	w->name = (char*)malloc(sizeof(char) * len);
-	if ((w->name) != NULL) {
-		strcpy(w->name, name);
-	}
-	switch (sign)
-	{
-	case CHARYEAR:
-		//w->Year.yearC = yearHeb;
-		break;
-	case INTYEAR:
-		w->Year.yearI = yearIntl;
-		break;
-	default:
-		break;
-	}
 
-	return w;
-}
-
-
-void PrintWorker(worker* w, int sign) {
+void PrintWorker(worker* w, int sign) { // print one worker
 
 	printf("The ID: %d\nThe name: %s\nThe salary: %d\n", w->ID, w->name, w->salary);
 
@@ -159,7 +117,7 @@ void PrintWorker(worker* w, int sign) {
 	printf("\n");
 }
 
-void PrintAllWorkers(WorkerList* head)
+void PrintAllWorkers(WorkerList* head) //print all the workers
 {
 	while (head)
 	{
@@ -168,7 +126,7 @@ void PrintAllWorkers(WorkerList* head)
 	}
 }
 
-WorkerList* addWorker(WorkerList* head, worker* w) {
+WorkerList* addWorker(WorkerList* head, worker* w) { //add worker
 	WorkerList* curr;
 	WorkerList* prev;
 	WorkerList* toAdd = (WorkerList*)malloc(sizeof(WorkerList));
@@ -220,14 +178,14 @@ int index(WorkerList* head, long unsigned id) { //found index of worker
 	return -1;
 }
 
-int R_index(WorkerList* head, long unsigned id) { //found worker by id by rexorciv
+int R_index(WorkerList* head, long unsigned id) { //found worker by id by recursion
 	if (head->data->ID == id) return 1;
 	if (head->next == NULL) return -1;
 	int res = R_index(head->next, id);
 	return res == -1 ? -1 : res + 1;
 }
 
-WorkerList* deleteWorstWorker(WorkerList* head) {
+WorkerList* deleteWorstWorker(WorkerList* head) { //Delete the lowest paid employee
 	WorkerList* p = head, *prev = NULL;
 	if (head->next == NULL)
 		return NULL;
@@ -238,13 +196,13 @@ WorkerList* deleteWorstWorker(WorkerList* head) {
 	return head;
 }
 
-void update_worker(WorkerList* head, float percent) {
+void update_worker(WorkerList* head, float percent) { //Raising wages
 	for (; head != NULL; head = head->next) {
 		head->data->salary *= (100.0 + percent)/100.0;
 	}
 }
 
-WorkerList* reverse(WorkerList* head) { //with mistake
+WorkerList* reverse(WorkerList* head) { 
 	WorkerList* curr;
 	WorkerList* prev;
 	WorkerList* next;
@@ -262,7 +220,7 @@ WorkerList* reverse(WorkerList* head) { //with mistake
 	return head;
 }
 
-void freeWorkers(WorkerList* head) {
+void freeWorkers(WorkerList* head) { //free acollations
 	for (; head->next != NULL; head = head->next) {
 		free(head->data);
 		free(head);
