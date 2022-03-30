@@ -1,0 +1,12 @@
+﻿'Project12.exe' (Win32): Loaded 'C:\Users\lidor\source\repos\Project12\Debug\Project12.exe'. Symbols loaded.
+'Project12.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ntdll.dll'. 
+'Project12.exe' (Win32): Loaded 'C:\Windows\SysWOW64\kernel32.dll'. 
+'Project12.exe' (Win32): Loaded 'C:\Windows\SysWOW64\KernelBase.dll'. 
+'Project12.exe' (Win32): Loaded 'C:\Windows\SysWOW64\vcruntime140d.dll'. 
+'Project12.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ucrtbased.dll'. 
+The thread 0x33e0 has exited with code 0 (0x0).
+'Project12.exe' (Win32): Loaded 'C:\Windows\SysWOW64\kernel.appcore.dll'. 
+'Project12.exe' (Win32): Loaded 'C:\Windows\SysWOW64\msvcrt.dll'. 
+The thread 0x1d64 has exited with code 0 (0x0).
+The thread 0x11b0 has exited with code 0 (0x0).
+The program '[8900] Project12.exe' has exited with code 0 (0x0).
