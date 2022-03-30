@@ -2,14 +2,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#define CHARYEAR '1'
-#define INTYEAR '0'
+#define CHARYEAR 0
+#define INTYEAR 1
 
 typedef struct worker {
 	unsigned long ID;
 	char* name;
 	unsigned long salary;
-	union {
+	union Year {
 		int yearI;
 		char yearC[6];
 	}Year;
@@ -20,72 +20,71 @@ typedef struct WorkerList {
 	struct WorkerList* next;
 } WorkerList;
 
-worker* CreatWorker(char sign);
-worker* _createWorker(unsigned long id, char* name, unsigned long salary, char yearHeb[6], unsigned long yearIntl, char sign);
-void PrintWorker(worker* w, char sign);
+//Functions
+worker* CreatWorker(int sign);
+//worker* _createWorker(unsigned long id, char* name, unsigned long salary, char yearHeb[6], unsigned long yearIntl, char sign);
+void PrintWorker(worker* w, int sign);
 WorkerList* addWorker(WorkerList* head, worker* w);
 int index(WorkerList* head, long unsigned id);
 int R_index(WorkerList* head, long unsigned id);
 WorkerList* deleteWorstWorker(WorkerList* head);
 void update_worker(WorkerList* head, float percent);
-//WorkerList* reverse(WorkerList* head);
-//void freeWorkers(WorkerList* head);
+WorkerList* reverse(WorkerList* head);
+void freeWorkers(WorkerList* head);
+void PrintAllWorkers(WorkerList* head);
 
 void main() {
-
-	worker* w1 = _createWorker(4, "alex4", 20, "", 2020, INTYEAR);
-	worker* w2 = _createWorker(1, "bob1", 5, "", 2020, INTYEAR);
-	worker* w3 = _createWorker(3, "cid3", 15, "", 2020, INTYEAR);
-	worker* w4 = _createWorker(2, "dana2", 10, "", 2020, INTYEAR);
-	PrintWorker(w1, INTYEAR);
+	
+	worker* w1 = CreatWorker(1);
+	worker* w2 = CreatWorker(1);
+	/*worker* w3 = CreatWorker(0);
+	worker* w4 = CreatWorker(1);*/
+	
+	printf("the worker list is:\n");
+	WorkerList* head = addWorker(NULL, w1);
+	/*PrintWorker(w1, INTYEAR);
 	PrintWorker(w2, INTYEAR);
 	PrintWorker(w3, INTYEAR);
-	PrintWorker(w4, INTYEAR);
-	WorkerList* head = addWorker(NULL, w1);
+	PrintWorker(w4, INTYEAR);*/
 	head = addWorker(head, w2);
-	head = addWorker(head, w3);
-	head = addWorker(head, w4);
+	/*head = addWorker(head, w3);
+	head = addWorker(head, w4);*/
+	PrintAllWorkers(head);
+	printf("****************\n");
 
-	printf("\n%d: %s   $$$= %d\n", index(head, w1->ID), w1->name, w1->salary);
-	printf("%d: %s   $$$= %d\n", index(head, w2->ID), w2->name, w2->salary);
-	printf("%d: %s   $$$= %d\n", index(head, w3->ID), w3->name, w3->salary);
-	printf("%d: %s   $$$= %d\n", index(head, w4->ID), w4->name, w4->salary);
-	
-	printf("\n%d: %s   $$$= %d\n", R_index(head, w1->ID), w1->name, w1->salary);
-	printf("%d: %s   $$$= %d\n",   R_index(head, w2->ID), w2->name, w2->salary);
-	printf("%d: %s   $$$= %d\n",   R_index(head, w3->ID), w3->name, w3->salary);
-	printf("%d: %s   $$$= %d\n",   R_index(head, w4->ID), w4->name, w4->salary);
+	printf("the list sorted in ascending order:\n");
+	PrintAllWorkers(head);
+	printf("****************\n");
 
-
+	printf("The list after the pay raise:\n");
 	update_worker(head, 20);
-	printf("\n%s   $$$= %d\n", w1->name, w1->salary);
-	printf("%s   $$$= %d\n",  w2->name, w2->salary);
-	printf("%s   $$$= %d\n",  w3->name, w3->salary);
-	printf("%s   $$$= %d\n",  w4->name, w4->salary);
-
+	PrintAllWorkers(head);
+	printf("****************\n");
 	
+	printf("List in reverse order:\n");
+	head = reverse(head);
+	PrintAllWorkers(head);
+	printf("****************");
+	
+	printf("Updated List:\n");
 	head = deleteWorstWorker(head);
-	printf("\n%d: %s   $$$= %d\n", index(head, w1->ID), w1->name, w1->salary);
-	printf("%d: %s   $$$= %d\n", index(head, w2->ID), w2->name, w2->salary);
-	printf("%d: %s   $$$= %d\n", index(head, w3->ID), w3->name, w3->salary);
-	printf("%d: %s   $$$= %d\n", index(head, w4->ID), w4->name, w4->salary);
+	PrintAllWorkers(head);
+	printf("****************");
+	
 
+	////check functions 1&2
+	//worker* worker1 = CreatWorker(INTYEAR);
+	//PrintWorker(worker1, INTYEAR);
 
-	//head = reverse(head);
-	//freeWorkers(head);
-
-	//check functions 1&2
-	worker* worker1 = CreatWorker(INTYEAR);
-	PrintWorker(worker1, INTYEAR);
-
-	//function 3
-	head = addWorker(NULL, worker1);
-	worker* worker2 = CreatWorker(INTYEAR);
-	head = addWorker(head, worker2);
+	////function 3
+	//head = addWorker(NULL, worker1);
+	//worker* worker2 = CreatWorker(INTYEAR);
+	//head = addWorker(head, worker2);
+	freeWorkers(head);
 
 }
 
-worker* CreatWorker(char sign)
+worker* CreatWorker(int sign)
 {
 	worker* w = (worker*)malloc(sizeof(worker));
 	if (w) {
@@ -103,6 +102,7 @@ worker* CreatWorker(char sign)
 		}
 		printf("enter salary:\n");
 		scanf_s("%d", &w->salary);
+		fseek(stdin, 0, SEEK_END);
 		printf("enter a year:\n");
 		switch (sign)
 		{
@@ -146,15 +146,25 @@ worker* _createWorker(unsigned long id, char* name, unsigned long salary, char y
 }
 
 
-void PrintWorker(worker* w, char sign) {
+void PrintWorker(worker* w, int sign) {
 
-	printf("\nThe ID: %d\nThe name: %s\nThe salary: %d", w->ID, w->name, w->salary);
+	printf("The ID: %d\nThe name: %s\nThe salary: %d\n", w->ID, w->name, w->salary);
 
-	if (sign == '0') {
-		printf("\n The year is: %d", w->Year.yearI);
+	if (sign == 0) {
+		printf("The year is: %s\n", w->Year.yearC);
 	}
 	else {
-		printf("\n The year is: %c", w->Year.yearC);
+		printf("The year is: %d\n", w->Year.yearI);
+	}
+	printf("\n");
+}
+
+void PrintAllWorkers(WorkerList* head)
+{
+	while (head)
+	{
+		PrintWorker(head->data, 1);
+		head = head->next;
 	}
 }
 
@@ -234,27 +244,28 @@ void update_worker(WorkerList* head, float percent) {
 	}
 }
 
-//WorkerList* reverse(WorkerList* head) { //with mistake
-//	WorkerList* curr;
-//	WorkerList* prev;
-//	WorkerList* next;
-//	prev = NULL;
-//	curr = head;
-//	next = NULL;
-//
-//	while (curr != NULL) {
-//		next = curr->next;
-//		curr->next = prev;
-//		prev = curr;
-//		curr = next;
-//	}
-//	head = prev;
-//	return head;
-//}
+WorkerList* reverse(WorkerList* head) { //with mistake
+	WorkerList* curr;
+	WorkerList* prev;
+	WorkerList* next;
+	prev = NULL;
+	curr = head;
+	next = NULL;
 
-//void freeWorkers(WorkerList* head) {
-//	for (; head->next != NULL; head = head->next) {
-//		free(head->data);
-//		free(head);
-//	}
-//}
+	while (curr != NULL) {
+		next = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = next;
+	}
+	head = prev;
+	return head;
+}
+
+void freeWorkers(WorkerList* head) {
+	for (; head->next != NULL; head = head->next) {
+		free(head->data);
+		free(head);
+	}
+}
+
